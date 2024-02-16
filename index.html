@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Frontend UI</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  <h1>Simple Frontend UI</h1>
+  <form id="sendForm">
+    <label for="ids">IDs:</label>
+    <input type="text" id="ids" name="ids" required><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    <label for="cookie">Cookie:</label>
+    <input type="text" id="cookie" name="cookie" required><br><br>
+    <button type="submit">Send Data</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    // JavaScript code to interact with the API
+    document.getElementById('sendForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+      
+      try {
+        const response = await fetch('/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.text();
+        document.getElementById('response').textContent = result;
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  </script>
+</body>
+</html>
